@@ -1,0 +1,31 @@
+version: "3"
+
+services: 
+
+  # Rust
+  rust:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USER_UID: 1000
+        USER_GID: 1000
+        VARIANT: 1
+        INSTALL_NODE: "true"
+        NODE_VERSION: "lts/*"
+
+    image: qcr.qcteq.io/development/rust:1.0.0
+    environment:
+      - NODE_ENV=development
+    container_name: rust-container
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker-host.sock
+      
+    entrypoint: /usr/local/share/docker-init.sh
+    command: sleep infinity 
+
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
