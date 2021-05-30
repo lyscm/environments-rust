@@ -21,10 +21,7 @@
 			"**/target/**": true
 		},
 		"files.exclude": {
-			"./.devcontainer": true,
-			"./.env": true,
-			"./.gitignore": true,
-			"./README.md": true
+			"**/.devcontainer": true
 		}
 	},
 
