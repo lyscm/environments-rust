@@ -1,0 +1,5 @@
+**/tests/
+**/infra/
+**/deploy/
+**/setup.sh
+**/Cargo.lock
