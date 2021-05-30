@@ -59,7 +59,22 @@ RUN apt-get update \
     # Use Docker script from script library to set things up
     && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "/var/run/docker-host.sock" "/var/run/docker.sock" "${USERNAME}" \
     # Clean up
-    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+    && apt-get autoremove -y && apt-get clean -y 
+    # && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+
+# Install Azure Function Tools
+RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg \
+    && sudo mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ \
+    && wget -q https://packages.microsoft.com/config/debian/$LINUX_VERSION/prod.list \
+    && sudo mv prod.list /etc/apt/sources.list.d/microsoft-prod.list \
+    && sudo chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg \
+    && sudo chown root:root /etc/apt/sources.list.d/microsoft-prod.list
+
+RUN sudo apt-get update \
+    && sudo apt-get install azure-functions-core-tools-3
+
+# Install SDK
+RUN cargo install azure-functions-sdk
 
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access 
 # to the Docker socket. The script will also execute CMD as needed.
