@@ -1,6 +1,0 @@
-./tests/
-./infra/
-./target/
-./deploy/
-./setup.sh
-./Cargo.lock
