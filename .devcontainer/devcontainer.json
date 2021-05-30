@@ -10,21 +10,27 @@
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
-		"terminal.integrated.shell.linux": "/bin/bash",
+		"terminal.integrated.profiles.linux": {
+			"bash": {
+				"path": "/bin/bash",
+			}
+		},
 		"lldb.executable": "/usr/bin/lldb",
 		// VS Code don't watch files under ./target
 		"files.watcherExclude": {
 			"**/target/**": true
 		},
 		"files.exclude": {
-			"**/.devcontainer": true,
-			".env": true
+			".devcontainer": true,
+			".env": true,
+			".gitignore": true,
+			"README.md": true
 		}
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"rust-lang.rust",
+		//"rust-lang.rust",
 		"bungcip.better-toml",
 		"vadimcn.vscode-lldb",
 		"mutantdino.resourcemonitor",
