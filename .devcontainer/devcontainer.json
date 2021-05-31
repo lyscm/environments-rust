@@ -27,7 +27,6 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		//"rust-lang.rust",
 		"bungcip.better-toml",
 		"vadimcn.vscode-lldb",
 		"mutantdino.resourcemonitor",
@@ -42,6 +41,7 @@
 		"ms-azuretools.vscode-bicep",
 		"wraith13.bracket-lens",
 		"redhat.vscode-yaml",
+		"serayuzgur.crates"
 	],
 
 	"shutdownAction": "none",
