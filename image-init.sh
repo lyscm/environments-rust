@@ -10,3 +10,5 @@ docker push $TAG
 
 # Remove extensions
 rm -r ./extensions
+
+# docker run -v /var/run/docker.sock:/var/run/docker-host.sock qcteqcr/rust-development
