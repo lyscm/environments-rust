@@ -15,7 +15,7 @@ ARG INSTALL_ZSH="true"
 ARG UPGRADE_PACKAGES="false"
 
 # [Option] Enable non-root Docker access in container
-ARG ENABLE_NONROOT_DOCKER="true"
+ARG ENABLE_NONROOT_DOCKER="false"
 
 # [Option] Use the OSS Moby CLI instead of the licensed Docker CLI
 ARG USE_MOBY="true"
