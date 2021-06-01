@@ -5,6 +5,10 @@
 !.devcontainer/
 !.venv
 !.gitignore
-!README.md
+!*.md
+!Dockerfile
+!*.sh
+!library-scripts
+!configurations
 
 
