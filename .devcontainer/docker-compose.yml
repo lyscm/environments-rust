@@ -4,17 +4,6 @@ services:
 
   # Rust
   rust:
-    #build:
-    #  context: .
-    #  dockerfile: Dockerfile
-    #  args:
-    #    USER_UID: 1000
-    #    USER_GID: 1000
-    #    VARIANT: 1
-    #    INSTALL_NODE: "true"
-    #    NODE_VERSION: "lts/*"
-#
-    #image: qcr.qcteq.io/development/rust:1.0.0
     image: qcteqcr/rust-development:latest
     environment:
       - NODE_ENV=development

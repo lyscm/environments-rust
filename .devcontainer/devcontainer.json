@@ -26,23 +26,23 @@
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"bungcip.better-toml",
-		"vadimcn.vscode-lldb",
-		"mutantdino.resourcemonitor",
-		"mechatroner.rainbow-csv",
-		"matklad.rust-analyzer",
-		"donjayamanne.githistory",
-		"felipecaputo.git-project-manager",
-		"eamodio.gitlens",
-		"oderwat.indent-rainbow",
-		"ms-azuretools.vscode-docker",
-		"ms-vscode.azurecli",
-		"ms-azuretools.vscode-bicep",
-		"wraith13.bracket-lens",
-		"redhat.vscode-yaml",
-		"serayuzgur.crates"
-	],
+	//"extensions": [
+	//	"bungcip.better-toml",
+	//	"vadimcn.vscode-lldb",
+	//	"mutantdino.resourcemonitor",
+	//	"mechatroner.rainbow-csv",
+	//	"matklad.rust-analyzer",
+	//	"donjayamanne.githistory",
+	//	"felipecaputo.git-project-manager",
+	//	"eamodio.gitlens",
+	//	"oderwat.indent-rainbow",
+	//	"ms-azuretools.vscode-docker",
+	//	"ms-vscode.azurecli",
+	//	"ms-azuretools.vscode-bicep",
+	//	"wraith13.bracket-lens",
+	//	"redhat.vscode-yaml",
+	//	"serayuzgur.crates"
+	//],
 
 	"shutdownAction": "none",
 

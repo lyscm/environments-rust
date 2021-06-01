@@ -58,6 +58,8 @@ RUN apt-get update \
     && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
     # Use Docker script from script library to set things up
     && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "/var/run/docker-host.sock" "/var/run/docker.sock" "${USERNAME}" \
+    # Install VSC extensions
+    && /bin/bash /tmp/library-scripts/vsc-extensions.sh \
     # Clean up
     && apt-get autoremove -y && apt-get clean -y 
     # && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
