@@ -7,13 +7,10 @@ services:
     image: qcteqcr/rust-development:latest
     environment:
       - NODE_ENV=development
-    container_name: development
+    container_name: rust-environment-builder
 
     volumes:
       - /var/run/docker.sock:/var/run/docker-host.sock
-      
-    entrypoint: /usr/local/share/docker-init.sh
-    command: sleep infinity 
 
     cap_add:
       - SYS_PTRACE
