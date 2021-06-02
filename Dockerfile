@@ -1,4 +1,4 @@
-FROM rust
+FROM --platform=$BUILDPLATFORM rust
 
 # Set variables
 ARG INSTALL_AZURE_CLI="true"
@@ -43,6 +43,7 @@ CMD git config --global user.email "vsc-environment-builder@qcteq.com" \
     && mkdir -p ~/.docker/cli-plugins \
     && mv buildx ~/.docker/cli-plugins/docker-buildx \
     && chmod a+x ~/.docker/cli-plugins/docker-buildx \
+    && docker buildx create --use \
     && sleep "infinity"
 
 # [Optional] Uncomment this section to install additional OS packages.

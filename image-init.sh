@@ -6,10 +6,7 @@ TAG_PUSH=qcteqcr/rust-development
 cp -r $HOME/.vscode-server/extensions ./extensions
 
 # Build repository images
-docker build -t $TAG_BUILD .
-
-docker tag $TAG_BUILD $TAG_PUSH
-docker push $TAG_PUSH
+docker buildx build --push --platform=linux/amd64,linux/arm64,linux/arm/v7 -t $TAG_PUSH . 
 
 # Remove extensions
 rm -r ./extensions
