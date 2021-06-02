@@ -1,69 +1,43 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.158.0/containers/rust/.devcontainer/base.Dockerfile
-ARG VARIANT="1"
 FROM rust
 
-# [Option] Install Azure CLI
+# Set variables
 ARG INSTALL_AZURE_CLI="true"
-
-# [Option] Install Azure Bicep
-ARG INSTALL_AZURE_BICEP="true"
-
-# [Option] Install zsh
 ARG INSTALL_ZSH="true"
-
-# [Option] Upgrade OS packages to their latest versions
 ARG UPGRADE_PACKAGES="false"
-
-# [Option] Enable non-root Docker access in container
 ARG ENABLE_NONROOT_DOCKER="true"
-
-# [Option] Use the OSS Moby CLI instead of the licensed Docker CLI
-ARG USE_MOBY="true"
-
 ARG LINUX_VERSION=10
 ARG LINUX_NAME=debian
-
-# Install .NET 5.0
-RUN if [ "${INSTALL_AZURE_BICEP}" = "true" ]; then wget https://packages.microsoft.com/config/${LINUX_NAME}/${LINUX_VERSION}/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
-    dpkg -i packages-microsoft-prod.deb; fi
-
-RUN if [ "${INSTALL_AZURE_BICEP}" = "true" ]; then  apt-get update && \
-    apt-get install -y apt-transport-https && \
-    apt-get update && \
-    apt-get install -y dotnet-sdk-5.0; fi
-
-RUN if [ "${INSTALL_AZURE_BICEP}" = "true" ]; then  apt-get update && \
-    apt-get install -y apt-transport-https && \
-    apt-get update && \
-    apt-get install -y aspnetcore-runtime-5.0; fi
-
-# Install Azure Bicep packages.
-RUN if [ "${INSTALL_AZURE_BICEP}" = "true" ]; then curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64 && \
-    chmod +x ./bicep && \
-    mv ./bicep /usr/local/bin/bicep && \
-    bicep --help; fi
-
-# Install needed packages and setup non-root user. Use a separate RUN statement to add your
-# own dependencies. A user of "automatic" attempts to reuse an user ID if one already exists.
 ARG USERNAME=automatic
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 ARG VSCODE_SERVER_PATH=/root/.vscode-server
 
+# [Option] Use the OSS Moby CLI instead of the licensed Docker CLI
+ARG USE_MOBY="true"
+
 COPY library-scripts/*.sh /tmp/library-scripts/
 COPY extensions/ ${VSCODE_SERVER_PATH}/extensions/
-COPY settings.json ${VSCODE_SERVER_PATH}/data/Machine/settings.json
+COPY configurations/ ${VSCODE_SERVER_PATH}/data/Machine/
+
+# Install needed packages and setup non-root user. Use a separate RUN statement to add your
+# own dependencies. A user of "automatic" attempts to reuse an user ID if one already exists.
 
 # Install Azure CLI packages.
 RUN if [ "${INSTALL_AZURE_CLI}" = "true" ]; then bash /tmp/library-scripts/azcli-debian.sh \
     && apt-get clean -y; fi
 
+# Install Debian packages
 RUN apt-get update \
     && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
-    # Use Docker script from script library to set things up
+    && apt-get clean -y 
+
+# Install Docker packages 
+RUN apt-get update \ 
     && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "/var/run/docker-host.sock" "/var/run/docker.sock" "${USERNAME}" \
-    # Clean up
-    && apt-get autoremove -y && apt-get clean -y 
+    && apt-get clean -y 
+
+# Cleanup installations
+RUN apt-get autoremove -y && apt-get clean -y 
 
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access 
 # to the Docker socket. The script will also execute CMD as needed.
