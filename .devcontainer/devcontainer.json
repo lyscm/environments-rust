@@ -7,7 +7,6 @@
 	],
 	"service": "rust",
 	"workspaceFolder": "..",
-
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"terminal.integrated.profiles.linux": {
@@ -24,7 +23,6 @@
 			"**/.devcontainer": true
 		}
 	},
-
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"bungcip.better-toml",
@@ -43,15 +41,11 @@
 		"redhat.vscode-yaml",
 		"serayuzgur.crates"
 	],
-
 	"shutdownAction": "none",
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-	
+	// "forwardPorts": [],	
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "docker system prune -f && docker image prune -f",
-
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	//"remoteUser": "vscode"
 }

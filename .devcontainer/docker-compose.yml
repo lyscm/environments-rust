@@ -4,7 +4,12 @@ services:
 
   # Rust
   rust:
-    image: qcteqcr/rust-development:latest
+    build:
+      context: ..
+      dockerfile: ../Dockerfile
+      args:
+        BUILDPLATFORM
+    image: qcteqcr/rust-environment-builder:latest
     environment:
       - NODE_ENV=development
     container_name: rust-environment-builder
