@@ -45,7 +45,7 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],	
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "docker system prune -f && docker image prune -f",
+	"postCreateCommand": "docker system prune -f && docker image prune -f && git config --global user.email 'vsc-environment-builder@qcteq.com' && git config --global user.name 'Q-CTeq' && export DOCKER_CLI_EXPERIMENTAL=enabled && export DOCKER_BUILDKIT=1 && docker build --platform=local -o . git://github.com/docker/buildx && mkdir -p ~/.docker/cli-plugins && mv buildx ~/.docker/cli-plugins/docker-buildx && chmod a+x ~/.docker/cli-plugins/docker-buildx && docker buildx create --use",
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	//"remoteUser": "vscode"
 }

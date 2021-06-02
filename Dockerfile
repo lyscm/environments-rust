@@ -16,8 +16,8 @@ ARG VSCODE_SERVER_PATH=/root/.vscode-server
 ARG USE_MOBY="true"
 
 COPY library-scripts/*.sh /tmp/library-scripts/
-COPY extensions/ ${VSCODE_SERVER_PATH}/extensions/
-COPY configurations/ ${VSCODE_SERVER_PATH}/data/Machine/
+COPY .vscode-extensions/ ${VSCODE_SERVER_PATH}/extensions/
+COPY .vscode-configurations/ ${VSCODE_SERVER_PATH}/data/Machine/
 
 # Install needed packages and setup non-root user. Use a separate RUN statement to add your
 # own dependencies. A user of "automatic" attempts to reuse an user ID if one already exists.

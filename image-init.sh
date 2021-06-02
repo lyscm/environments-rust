@@ -6,7 +6,7 @@ TAG_PUSH=qcteqcr/rust-development-environment
 TAG_BUILDER=qcteqcr/rust-environment-builder
 
 # Copy extensions
-cp -r $HOME/.vscode-server/extensions ./extensions
+cp -r $HOME/.vscode-server/extensions/* ./.vscode-extensions
 
 docker tag $TAG_BUILDER $TAG_PUSH
 
@@ -14,6 +14,6 @@ docker tag $TAG_BUILDER $TAG_PUSH
 docker buildx build --push --platform=linux/amd64,linux/arm64,linux/arm/v7 -t $TAG_PUSH . 
 
 # Remove extensions
-rm -r ./extensions
+rm -r ./.vscode-extensions/**/
 
 docker run -d --restart unless-stopped -v /var/run/docker.sock:/var/run/docker-host.sock $TAG_PUSH

@@ -1,5 +1,6 @@
 # Ignore in same directory as the .gitignore file
 /*
+/.vscode-extensions/**
 
 # Except
 !.devcontainer/
@@ -8,7 +9,7 @@
 !*.md
 !Dockerfile
 !*.sh
-!library-scripts
+!library-scripts/
 !configurations
-
-
+!.vscode-extensions/
+!.vscode-configurations/
