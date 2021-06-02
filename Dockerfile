@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM rust
+FROM mcr.microsoft.com/vscode/devcontainers/rust
 
 # Set variables
 ARG INSTALL_AZURE_CLI="true"
