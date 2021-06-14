@@ -35,8 +35,8 @@ RUN apt-get update \
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access 
 # to the Docker socket. The script will also execute CMD as needed.
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
-CMD git config --global user.email "vsc-environment-builder@qcteq.com" \
-    && git config --global user.name "Q-CTeq" \
+CMD git config --global user.email "qcteqcr-environment-builder@qcteq.com" \
+    && git config --global user.name "qcteq" \
     && export DOCKER_CLI_EXPERIMENTAL=enabled \
     && export DOCKER_BUILDKIT=1 \
     && docker build --platform=local -o . git://github.com/docker/buildx \

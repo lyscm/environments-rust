@@ -1,8 +1,9 @@
 # Docker login
-docker login -u qcteqcr
+# docker login -u qcteqcr
 
 # Set variables
-TAG=qcteqcr/rust-development-environment
+TAG=qcteqcr/rust-sdk-runtime
+CONTAINER_NAME=rust-environment
 
 # Copy extensions
 cp -r $HOME/.vscode-server/extensions/* ./.vscode-extensions
@@ -13,4 +14,4 @@ docker buildx build --push --platform=linux/amd64,linux/arm64,linux/arm/v7 -t $T
 # Remove extensions
 rm -r ./.vscode-extensions/**/
 
-docker run -d --restart unless-stopped -v /var/run/docker.sock:/var/run/docker-host.sock $TAG
+docker run -d --name $CONTAINER_NAME --restart unless-stopped -v /var/run/docker.sock:/var/run/docker-host.sock $TAG --cap_add=SYS_PTRACE --security_opt=seccomp:unconfined
