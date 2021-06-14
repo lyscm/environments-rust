@@ -39,7 +39,9 @@
 		"ms-azuretools.vscode-bicep",
 		"wraith13.bracket-lens",
 		"redhat.vscode-yaml",
-		"serayuzgur.crates"
+		"serayuzgur.crates",
+		"github.vscode-pull-request-github",
+		"davidanson.vscode-markdownlint"
 	],
 	"shutdownAction": "none",
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
