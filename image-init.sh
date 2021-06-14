@@ -14,4 +14,4 @@ docker buildx build --push --platform=linux/amd64,linux/arm64,linux/arm/v7 -t $T
 # Remove extensions
 rm -r ./.vscode-extensions/**/
 
-docker run -d --name $CONTAINER_NAME --restart unless-stopped -v /var/run/docker.sock:/var/run/docker-host.sock $TAG --cap_add=SYS_PTRACE --security_opt=seccomp:unconfined
+docker run -d --name $CONTAINER_NAME --restart unless-stopped -v /var/run/docker.sock:/var/run/docker-host.sock $TAG
