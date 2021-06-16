@@ -8,8 +8,5 @@
     // VS Code don't watch files under ./target
     "files.watcherExclude": {
         "**/target/**": true
-    },
-    "files.exclude": {
-        "**/.devcontainer": true
     }
 }

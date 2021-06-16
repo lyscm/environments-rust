@@ -18,9 +18,6 @@
 		// VS Code don't watch files under ./target
 		"files.watcherExclude": {
 			"**/target/**": true
-		},
-		"files.exclude": {
-			"**/.devcontainer": true
 		}
 	},
 	// Add the IDs of extensions you want installed when the container is created.
@@ -40,7 +37,11 @@
 		"wraith13.bracket-lens",
 		"redhat.vscode-yaml",
 		"serayuzgur.crates",
-		"davidanson.vscode-markdownlint"
+		"coenraads.bracket-pair-colorizer",
+		"aaron-bond.better-comments",
+		"yzhang.markdown-all-in-one",
+		"ms-vscode.cpptools",
+		"webfreak.debug"
 	],
 	"shutdownAction": "none",
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
