@@ -41,7 +41,8 @@
 		"aaron-bond.better-comments",
 		"yzhang.markdown-all-in-one",
 		"ms-vscode.cpptools",
-		"webfreak.debug"
+		"webfreak.debug",
+		"github.remotehub"
 	],
 	"shutdownAction": "none",
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

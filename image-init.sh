@@ -14,4 +14,12 @@ docker buildx build --no-cache --push --platform=linux/amd64,linux/arm64,linux/a
 # Remove extensions
 rm -r ./.vscode-extensions/**/
 
+# Remove container
+docker stop $CONTAINER_NAME
+docker rm $CONTAINER_NAME
+
+# Pull latest images
+docker pull $TAG
+
+# Run a container
 docker run -d --name $CONTAINER_NAME --restart unless-stopped -v /var/run/docker.sock:/var/run/docker-host.sock $TAG
