@@ -9,7 +9,7 @@ CONTAINER_NAME=rust-environment
 cp -r $HOME/.vscode-server/extensions/* ./.vscode-extensions
 
 # Build repository images
-docker buildx build --push --platform=linux/amd64,linux/arm64,linux/arm/v7 -t $TAG . 
+docker buildx build --no-cache --push --platform=linux/amd64,linux/arm64,linux/arm/v7 -t $TAG . 
 
 # Remove extensions
 rm -r ./.vscode-extensions/**/
