@@ -42,7 +42,8 @@
 		"yzhang.markdown-all-in-one",
 		"ms-vscode.cpptools",
 		"webfreak.debug",
-		"github.remotehub"
+		"github.remotehub",
+		"tamasfe.even-better-toml"
 	],
 	"shutdownAction": "none",
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
