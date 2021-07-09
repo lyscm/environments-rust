@@ -13,6 +13,7 @@ services:
         USER_GID: 1000
     image: ghcr.io/lyscm/lyscm.common.tiers/rust/base
     container_name: lyscm.common.tiers-rust
+    network_mode: "host"
     init: true
     volumes:
       # Forwards the local Docker socket to the container.
@@ -30,6 +31,7 @@ services:
     security_opt:
       - seccomp:unconfined
 
+    privileged: true
     restart: unless-stopped
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode
