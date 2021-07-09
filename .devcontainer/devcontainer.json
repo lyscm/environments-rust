@@ -1,5 +1,3 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.158.0/containers/rust
 {
 	"name": "Rust",
 	"dockerComposeFile": [
@@ -7,20 +5,17 @@
 	],
 	"service": "rust",
 	"workspaceFolder": "..",
-	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"terminal.integrated.profiles.linux": {
 			"bash": {
-				"path": "/bin/bash",
+				"path": "/bin/bash"
 			}
 		},
 		"lldb.executable": "/usr/bin/lldb",
-		// VS Code don't watch files under ./target
 		"files.watcherExclude": {
 			"**/target/**": true
 		}
 	},
-	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"bungcip.better-toml",
 		"vadimcn.vscode-lldb",
@@ -46,10 +41,5 @@
 		"tamasfe.even-better-toml"
 	],
 	"shutdownAction": "none",
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],	
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "docker system prune -f && docker image prune -f && git config --global user.email 'qcteqcr-environment-builder@qcteq.com' && git config --global user.name 'qcteq' && export DOCKER_CLI_EXPERIMENTAL=enabled && export DOCKER_BUILDKIT=1 && docker build --platform=local -o . git://github.com/docker/buildx && mkdir -p ~/.docker/cli-plugins && mv buildx ~/.docker/cli-plugins/docker-buildx && chmod a+x ~/.docker/cli-plugins/docker-buildx && docker buildx create --use",
-	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	//"remoteUser": "vscode"
+	"postCreateCommand": "docker system prune -f && docker image prune -f && git config --global user.email 'no-reply@lyscm.github.com' && git config --global user.name 'lyscm' && export DOCKER_CLI_EXPERIMENTAL=enabled && export DOCKER_BUILDKIT=1 && docker build --platform=local -o . git://github.com/docker/buildx && mkdir -p ~/.docker/cli-plugins && mv buildx ~/.docker/cli-plugins/docker-buildx && chmod a+x ~/.docker/cli-plugins/docker-buildx && docker buildx create --use"
 }
