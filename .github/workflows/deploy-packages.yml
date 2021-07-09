@@ -24,9 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: lyscm/lyscm.common.tiers/rust
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: 1 - Checkout
