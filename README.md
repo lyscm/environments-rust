@@ -1,4 +1,7 @@
 # RUST TIER BUILDER - REPOSITORY <h1> 
+
+[![lyscm.common.tiers.rust - CI](https://github.com/lyscm/lyscm.common.tiers.rust/actions/workflows/deploy-packages.yml/badge.svg?branch=master)](https://github.com/lyscm/lyscm.common.tiers.rust/actions/workflows/deploy-packages.yml)
+
 ## Initiate package(s): <h2> 
 
 Set parameters:
