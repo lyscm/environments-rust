@@ -6,12 +6,12 @@ services:
   rust:
     build: 
       context: ..
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.base
       args:
         # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_UID: 1000
         USER_GID: 1000
-    image: ghcr.io/lyscm/lyscm.common.tiers/rust
+    image: ghcr.io/lyscm/lyscm.common.tiers/rust/base
     container_name: lyscm.common.tiers-rust
     init: true
     volumes:
@@ -26,7 +26,7 @@ services:
 
     # Uncomment the next four lines if you will use a ptrace-based debuggers like C++, Go, and Rust.
     cap_add:
-     - SYS_PTRACE
+      - SYS_PTRACE
     security_opt:
       - seccomp:unconfined
 

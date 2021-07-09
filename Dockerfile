@@ -2,7 +2,7 @@
 FROM --platform=$BUILDPLATFORM ghcr.io/lyscm/lyscm.common.tiers/rust/extensions as extensions
 
 # [Required] Python ecosystem
-FROM --platform=$BUILDPLATFORM python AS base
+FROM --platform=$BUILDPLATFORM python as settings
 
 ARG TARGETPLATFORM
 ARG SCRIPT_NAME=".initiate-scripts.py"
@@ -18,34 +18,17 @@ RUN python $SCRIPT_NAME
 RUN cd ./extensions && unzip extensions.zip && rm -rf extensions.zip && cd -
 
 # Note: You can use any Debian/Ubuntu based image you want. 
-FROM mcr.microsoft.com/vscode/devcontainers/rust
+FROM ghcr.io/lyscm/lyscm.common.tiers/rust/base
 
-# [Option] Install zsh
-ARG INSTALL_ZSH="true"
-# [Option] Upgrade OS packages to their latest versions
-ARG UPGRADE_PACKAGES="false"
-# [Option] Enable non-root Docker access in container
-ARG ENABLE_NONROOT_DOCKER="true"
-# [Option] Use the OSS Moby CLI instead of the licensed Docker CLI
-ARG USE_MOBY="true"
+ARG OWNER="lyscm"
+ARG REPOSITORY_NAME="lyscm.common.tiers.rust"
 
-# Install needed packages and setup non-root user. Use a separate RUN statement to add your
-# own dependencies. A user of "automatic" attempts to reuse an user ID if one already exists.
-ARG USERNAME=automatic
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-COPY library-scripts/*.sh /tmp/library-scripts/
-RUN apt-get update \
-    && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
-    # Use Docker script from script library to set things up
-    && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "/var/run/docker-host.sock" "/var/run/docker.sock" "${USERNAME}" \
-    # Clean up
-    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+LABEL org.opencontainers.image.source https://github.com/${OWNER}/${REPOSITORY_NAME}
 
 # [Required] Setup settings and extensions
 ARG VSCODE_SERVER_PATH=/root/.vscode-server
-COPY --from=base /lyscm/$TARGETPLATFORM/extensions/ ${VSCODE_SERVER_PATH}/extensions/
-COPY --from=base /lyscm/$TARGETPLATFORM/.vscode-configurations/ ${VSCODE_SERVER_PATH}/data/Machine/
+COPY --from=settings /lyscm/$TARGETPLATFORM/extensions/ ${VSCODE_SERVER_PATH}/extensions/
+COPY --from=settings /lyscm/$TARGETPLATFORM/.vscode-configurations/ ${VSCODE_SERVER_PATH}/data/Machine/
 
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access 
 # to the Docker socket. The script will also execute CMD as needed.
