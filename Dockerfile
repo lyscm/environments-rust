@@ -20,6 +20,7 @@ RUN cd ./extensions && unzip extensions.zip && rm -rf extensions.zip && cd -
 # Note: You can use any Debian/Ubuntu based image you want. 
 FROM ghcr.io/lyscm/lyscm.common.tiers/rust/base
 
+ARG TARGETPLATFORM
 ARG OWNER="lyscm"
 ARG REPOSITORY_NAME="lyscm.common.tiers.rust"
 
