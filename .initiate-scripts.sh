@@ -12,7 +12,4 @@ rm -rf $HOME/.vscode-server/extensions/extensions.zip
 
 docker buildx build --push --tag $REGISTRY/$OWNER/$REPOSITORY_NAME/extensions --file ./Dockerfile.extensions .
 
-docker build --tag $REGISTRY/$OWNER/$REPOSITORY_NAME/base --file ./Dockerfile.base .
-docker push $REGISTRY/$OWNER/$REPOSITORY_NAME/base
-
 rm -rf extensions.zip
