@@ -36,13 +36,6 @@ COPY --from=settings /lyscm/$TARGETPLATFORM/.vscode-configurations/ ${VSCODE_SER
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
 CMD git config --global user.email "no-reply@lyscm.github.com" \
     && git config --global user.name "lyscm" \
-    && export DOCKER_CLI_EXPERIMENTAL=enabled \
-    && export DOCKER_BUILDKIT=1 \
-    && docker build --platform=local -o . git://github.com/docker/buildx \
-    && mkdir -p ~/.docker/cli-plugins \
-    && mv buildx ~/.docker/cli-plugins/docker-buildx \
-    && chmod a+x ~/.docker/cli-plugins/docker-buildx \
-    && docker buildx create --use \
     && sleep "infinity"
 
 # [Optional] Uncomment this section to install additional OS packages.
