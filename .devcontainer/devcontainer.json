@@ -12,8 +12,25 @@
 			}
 		},
 		"lldb.executable": "/usr/bin/lldb",
+		"search.exclude": {
+			"**/node_modules": true,
+			"**/bower_components": true,
+			"**/*.code-search": true,
+			"**/env/**": true,
+			"**/.vscode/**": true,
+			"**/venv/**": true
+		},
 		"files.watcherExclude": {
-			"**/target/**": true
+			"**/target/**": true,
+			"**/node_modules/*/**": true,
+			"**/.hg/store/**": true,
+			"**/.git/objects/**": true,
+			"**/.git/subtree-cache/**": true,
+			"**/node_modules/**": true,
+			"**/env/**": true,
+			"**/venv/**": true,
+			"**/.vscode/**": true,
+			"env-*": true
 		}
 	},
 	"extensions": [
@@ -38,7 +55,8 @@
 		"ms-vscode.cpptools",
 		"webfreak.debug",
 		"github.remotehub",
-		"tamasfe.even-better-toml"
+		"tamasfe.even-better-toml",
+		"vsls-contrib.codetour"
 	],
 	"shutdownAction": "none",
 	"postCreateCommand": "git config --global user.email 'no-reply@lyscm.github.com' && git config --global user.name 'lyscm'"
