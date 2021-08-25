@@ -1,7 +1,7 @@
 
 OWNER="lyscm"
 REGISTRY="ghcr.io"
-REPOSITORY_NAME="lyscm.common.tiers/rust"
+REPOSITORY_NAME="environments/rust"
 
 echo $CR_PAT | docker login $REGISTRY -u $OWNER --password-stdin
 

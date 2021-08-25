@@ -10,7 +10,7 @@
 # Syntax: ./common-debian.sh [install zsh flag] [username] [user UID] [user GID] [upgrade packages flag] [install Oh My Zsh! flag] [Add non-free packages]
 
 INSTALL_ZSH=${1:-"true"}
-USERNAME=${2:-"automatic"}
+USER_NAME=${2:-"automatic"}
 USER_UID=${3:-"automatic"}
 USER_GID=${4:-"automatic"}
 UPGRADE_PACKAGES=${5:-"true"}
@@ -29,27 +29,27 @@ rm -f /etc/profile.d/00-restore-env.sh
 echo "export PATH=${PATH//$(sh -lc 'echo $PATH')/\$PATH}" > /etc/profile.d/00-restore-env.sh
 chmod +x /etc/profile.d/00-restore-env.sh
 
-# If in automatic mode, determine if a user already exists, if not use vscode
-if [ "${USERNAME}" = "auto" ] || [ "${USERNAME}" = "automatic" ]; then
-    USERNAME=""
-    POSSIBLE_USERS=("vscode" "node" "codespace" "$(awk -v val=1000 -F ":" '$3==val{print $1}' /etc/passwd)")
+# If in automatic mode, determine if a user already exists, if not use non-root
+if [ "${USER_NAME}" = "auto" ] || [ "${USER_NAME}" = "automatic" ]; then
+    USER_NAME=""
+    POSSIBLE_USERS=("non-root" "node" "codespace" "$(awk -v val=1000 -F ":" '$3==val{print $1}' /etc/passwd)")
     for CURRENT_USER in ${POSSIBLE_USERS[@]}; do
         if id -u ${CURRENT_USER} > /dev/null 2>&1; then
-            USERNAME=${CURRENT_USER}
+            USER_NAME=${CURRENT_USER}
             break
         fi
     done
-    if [ "${USERNAME}" = "" ]; then
-        USERNAME=vscode
+    if [ "${USER_NAME}" = "" ]; then
+        USER_NAME=non-root
     fi
-elif [ "${USERNAME}" = "none" ]; then
-    USERNAME=root
+elif [ "${USER_NAME}" = "none" ]; then
+    USER_NAME=root
     USER_UID=0
     USER_GID=0
 fi
 
 # Load markers to see which steps have already run
-MARKER_FILE="/usr/local/etc/vscode-dev-containers/common"
+MARKER_FILE="/usr/local/etc/non-root/common"
 if [ -f "${MARKER_FILE}" ]; then
     echo "Marker file found:"
     cat "${MARKER_FILE}"
@@ -170,41 +170,41 @@ if [ "${LOCALE_ALREADY_SET}" != "true" ] && ! grep -o -E '^\s*en_US.UTF-8\s+UTF-
 fi
 
 # Create or update a non-root user to match UID/GID.
-if id -u ${USERNAME} > /dev/null 2>&1; then
+if id -u ${USER_NAME} > /dev/null 2>&1; then
     # User exists, update if needed
-    if [ "${USER_GID}" != "automatic" ] && [ "$USER_GID" != "$(id -G $USERNAME)" ]; then 
-        groupmod --gid $USER_GID $USERNAME 
-        usermod --gid $USER_GID $USERNAME
+    if [ "${USER_GID}" != "automatic" ] && [ "$USER_GID" != "$(id -G $USER_NAME)" ]; then 
+        groupmod --gid $USER_GID $USER_NAME 
+        usermod --gid $USER_GID $USER_NAME
     fi
-    if [ "${USER_UID}" != "automatic" ] && [ "$USER_UID" != "$(id -u $USERNAME)" ]; then 
-        usermod --uid $USER_UID $USERNAME
+    if [ "${USER_UID}" != "automatic" ] && [ "$USER_UID" != "$(id -u $USER_NAME)" ]; then 
+        usermod --uid $USER_UID $USER_NAME
     fi
 else
     # Create user
     if [ "${USER_GID}" = "automatic" ]; then
-        groupadd $USERNAME
+        groupadd $USER_NAME
     else
-        groupadd --gid $USER_GID $USERNAME
+        groupadd --gid $USER_GID $USER_NAME
     fi
     if [ "${USER_UID}" = "automatic" ]; then 
-        useradd -s /bin/bash --gid $USERNAME -m $USERNAME
+        useradd -s /bin/bash --gid $USER_NAME -m $USER_NAME
     else
-        useradd -s /bin/bash --uid $USER_UID --gid $USERNAME -m $USERNAME
+        useradd -s /bin/bash --uid $USER_UID --gid $USER_NAME -m $USER_NAME
     fi
 fi
 
 # Add add sudo support for non-root user
-if [ "${USERNAME}" != "root" ] && [ "${EXISTING_NON_ROOT_USER}" != "${USERNAME}" ]; then
-    echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME
-    chmod 0440 /etc/sudoers.d/$USERNAME
-    EXISTING_NON_ROOT_USER="${USERNAME}"
+if [ "${USER_NAME}" != "root" ] && [ "${EXISTING_NON_ROOT_USER}" != "${USER_NAME}" ]; then
+    echo $USER_NAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USER_NAME
+    chmod 0440 /etc/sudoers.d/$USER_NAME
+    EXISTING_NON_ROOT_USER="${USER_NAME}"
 fi
 
 # ** Shell customization section **
-if [ "${USERNAME}" = "root" ]; then 
+if [ "${USER_NAME}" = "root" ]; then 
     USER_RC_PATH="/root"
 else
-    USER_RC_PATH="/home/${USERNAME}"
+    USER_RC_PATH="/home/${USER_NAME}"
 fi
 
 # .bashrc/.zshrc snippet
@@ -214,15 +214,15 @@ if [ -z "${USER}" ]; then export USER=$(whoami); fi
 if [[ "${PATH}" != *"$HOME/.local/bin"* ]]; then export PATH="${PATH}:$HOME/.local/bin"; fi
 
 # Display optional first run image specific notice if configured and terminal is interactive
-if [ -t 1 ] && [[ "${TERM_PROGRAM}" = "vscode" || "${TERM_PROGRAM}" = "codespaces" ]] && [ ! -f "$HOME/.config/vscode-dev-containers/first-run-notice-already-displayed" ]; then
-    if [ -f "/usr/local/etc/vscode-dev-containers/first-run-notice.txt" ]; then
-        cat "/usr/local/etc/vscode-dev-containers/first-run-notice.txt"
+if [ -t 1 ] && [[ "${TERM_PROGRAM}" = "non-root" || "${TERM_PROGRAM}" = "codespaces" ]] && [ ! -f "$HOME/.config/non-root/first-run-notice-already-displayed" ]; then
+    if [ -f "/usr/local/etc/non-root/first-run-notice.txt" ]; then
+        cat "/usr/local/etc/non-root/first-run-notice.txt"
     elif [ -f "/workspaces/.codespaces/shared/first-run-notice.txt" ]; then
         cat "/workspaces/.codespaces/shared/first-run-notice.txt"
     fi
-    mkdir -p "$HOME/.config/vscode-dev-containers"
+    mkdir -p "$HOME/.config/non-root"
     # Mark first run notice as displayed after 10s to avoid problems with fast terminal refreshes hiding it
-    ((sleep 10s; touch "$HOME/.config/vscode-dev-containers/first-run-notice-already-displayed") &)
+    ((sleep 10s; touch "$HOME/.config/non-root/first-run-notice-already-displayed") &)
 fi
 
 EOF
@@ -336,11 +336,11 @@ if [ "${RC_SNIPPET_ALREADY_ADDED}" != "true" ]; then
     echo "${RC_SNIPPET}" >> /etc/bash.bashrc
     echo "${CODESPACES_BASH}" >> "${USER_RC_PATH}/.bashrc"
     echo 'export PROMPT_DIRTRIM=4' >> "${USER_RC_PATH}/.bashrc"
-    if [ "${USERNAME}" != "root" ]; then
+    if [ "${USER_NAME}" != "root" ]; then
         echo "${CODESPACES_BASH}" >> "/root/.bashrc"
         echo 'export PROMPT_DIRTRIM=4' >> "/root/.bashrc"
     fi
-    chown ${USERNAME}:${USERNAME} "${USER_RC_PATH}/.bashrc"
+    chown ${USER_NAME}:${USER_NAME} "${USER_RC_PATH}/.bashrc"
     RC_SNIPPET_ALREADY_ADDED="true"
 fi
 
@@ -350,12 +350,12 @@ if [ ! -d "${USER_RC_PATH}/.oh-my-bash}" ] && [ "${INSTALL_OH_MYS}" = "true" ]; 
     echo "${OMB_README}" >> "${USER_RC_PATH}/.oh-my-bash/README.md"
     echo "${OMB_STUB}" >> "${USER_RC_PATH}/.oh-my-bash/oh-my-bash.sh"
     chmod +x "${USER_RC_PATH}/.oh-my-bash/oh-my-bash.sh"
-    if [ "${USERNAME}" != "root" ]; then
+    if [ "${USER_NAME}" != "root" ]; then
         echo "${OMB_README}" >> "/root/.oh-my-bash/README.md"
         echo "${OMB_STUB}" >> "/root/.oh-my-bash/oh-my-bash.sh"
         chmod +x "/root/.oh-my-bash/oh-my-bash.sh"
     fi
-    chown -R "${USERNAME}:${USERNAME}" "${USER_RC_PATH}/.oh-my-bash"
+    chown -R "${USER_NAME}:${USER_NAME}" "${USER_RC_PATH}/.oh-my-bash"
 fi
 
 # Optionally install and configure zsh and Oh My Zsh!
@@ -393,9 +393,9 @@ if [ "${INSTALL_ZSH}" = "true" ]; then
         cd "${OH_MY_INSTALL_DIR}"
         git repack -a -d -f --depth=1 --window=1
         # Copy to non-root user if one is specified
-        if [ "${USERNAME}" != "root" ]; then
+        if [ "${USER_NAME}" != "root" ]; then
             cp -rf "${USER_RC_FILE}" "${OH_MY_INSTALL_DIR}" /root
-            chown -R ${USERNAME}:${USERNAME} "${USER_RC_PATH}"
+            chown -R ${USER_NAME}:${USER_NAME} "${USER_RC_PATH}"
         fi
     fi
 fi
@@ -403,7 +403,7 @@ fi
 # Persist image metadata info, script if meta.env found in same directory
 META_INFO_SCRIPT="$(cat << 'EOF'
 #!/bin/sh
-. /usr/local/etc/vscode-dev-containers/meta.env
+. /usr/local/etc/non-root/meta.env
 
 # Minimal output
 if [ "$1" = "version" ] || [ "$1" = "image-version" ]; then
@@ -433,8 +433,8 @@ EOF
 )"
 SCRIPT_DIR="$(cd $(dirname $0) && pwd)"
 if [ -f "${SCRIPT_DIR}/meta.env" ]; then
-    mkdir -p /usr/local/etc/vscode-dev-containers/
-    cp -f "${SCRIPT_DIR}/meta.env" /usr/local/etc/vscode-dev-containers/meta.env
+    mkdir -p /usr/local/etc/non-root/
+    cp -f "${SCRIPT_DIR}/meta.env" /usr/local/etc/non-root/meta.env
      echo "${META_INFO_SCRIPT}" > /usr/local/bin/devcontainer-info
     chmod +x /usr/local/bin/devcontainer-info
 fi

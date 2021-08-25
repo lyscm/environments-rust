@@ -4,8 +4,8 @@ services:
   
   # Rust
   rust:
-    image: ghcr.io/lyscm/lyscm.common.tiers/rust/base
-    container_name: lyscm.common.tiers-rust
+    image: ghcr.io/lyscm/environments/rust/base
+    container_name: environments-rust
     network_mode: "host"
     init: true
     volumes:

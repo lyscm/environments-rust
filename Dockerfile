@@ -1,5 +1,5 @@
 # [Required] Extensions
-FROM --platform=$BUILDPLATFORM ghcr.io/lyscm/lyscm.common.tiers/rust/extensions as extensions
+FROM --platform=$BUILDPLATFORM ghcr.io/lyscm/environments/rust/extensions as extensions
 
 # [Required] Python ecosystem
 FROM --platform=$BUILDPLATFORM python as settings
@@ -18,11 +18,11 @@ RUN python $SCRIPT_NAME
 RUN cd ./extensions && unzip extensions.zip && rm -rf extensions.zip && cd -
 
 # Note: You can use any Debian/Ubuntu based image you want. 
-FROM ghcr.io/lyscm/lyscm.common.tiers/rust/base
+FROM ghcr.io/lyscm/environments/rust/base
 
 ARG TARGETPLATFORM
 ARG OWNER="lyscm"
-ARG REPOSITORY_NAME="lyscm.common.tiers.rust"
+ARG REPOSITORY_NAME="environments-rust"
 
 LABEL org.opencontainers.image.source https://github.com/${OWNER}/${REPOSITORY_NAME}
 

@@ -2,7 +2,7 @@
 FROM scratch
 
 ARG OWNER="lyscm"
-ARG REPOSITORY_NAME="lyscm.common.tiers.rust"
+ARG REPOSITORY_NAME="environments-rust"
 
 LABEL org.opencontainers.image.source https://github.com/${OWNER}/${REPOSITORY_NAME}
 

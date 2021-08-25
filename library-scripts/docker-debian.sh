@@ -12,7 +12,7 @@
 ENABLE_NONROOT_DOCKER=${1:-"true"}
 SOURCE_SOCKET=${2:-"/var/run/docker-host.sock"}
 TARGET_SOCKET=${3:-"/var/run/docker.sock"}
-USERNAME=${4:-"automatic"}
+USER_NAME=${4:-"automatic"}
 USE_MOBY=${5:-"true"}
 
 set -e
@@ -23,20 +23,20 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Determine the appropriate non-root user
-if [ "${USERNAME}" = "auto" ] || [ "${USERNAME}" = "automatic" ]; then
-    USERNAME=""
-    POSSIBLE_USERS=("vscode" "node" "codespace" "$(awk -v val=1000 -F ":" '$3==val{print $1}' /etc/passwd)")
+if [ "${USER_NAME}" = "auto" ] || [ "${USER_NAME}" = "automatic" ]; then
+    USER_NAME=""
+    POSSIBLE_USERS=("non-root" "node" "codespace" "$(awk -v val=1000 -F ":" '$3==val{print $1}' /etc/passwd)")
     for CURRENT_USER in ${POSSIBLE_USERS[@]}; do
         if id -u ${CURRENT_USER} > /dev/null 2>&1; then
-            USERNAME=${CURRENT_USER}
+            USER_NAME=${CURRENT_USER}
             break
         fi
     done
-    if [ "${USERNAME}" = "" ]; then
-        USERNAME=root
+    if [ "${USER_NAME}" = "" ]; then
+        USER_NAME=root
     fi
-elif [ "${USERNAME}" = "none" ] || ! id -u ${USERNAME} > /dev/null 2>&1; then
-    USERNAME=root
+elif [ "${USER_NAME}" = "none" ] || ! id -u ${USER_NAME} > /dev/null 2>&1; then
+    USER_NAME=root
 fi
 
 # Function to run apt-get if needed
@@ -99,14 +99,14 @@ if [ "${SOURCE_SOCKET}" != "${TARGET_SOCKET}" ]; then
 fi
 
 # Add a stub if not adding non-root user access, user is root
-if [ "${ENABLE_NONROOT_DOCKER}" = "false" ] || [ "${USERNAME}" = "root" ]; then
+if [ "${ENABLE_NONROOT_DOCKER}" = "false" ] || [ "${USER_NAME}" = "root" ]; then
     echo '/usr/bin/env bash -c "\$@"' > /usr/local/share/docker-init.sh
     chmod +x /usr/local/share/docker-init.sh
     exit 0
 fi
 
 # If enabling non-root access and specified user is found, setup socat and add script
-chown -h "${USERNAME}":root "${TARGET_SOCKET}"        
+chown -h "${USER_NAME}":root "${TARGET_SOCKET}"        
 if ! dpkg -s socat > /dev/null 2>&1; then
     apt-get-update-if-needed
     apt-get -y install socat
@@ -142,12 +142,12 @@ log()
 }
 
 echo -e "\n** \$(date) **" | sudoIf tee -a \${SOCAT_LOG} > /dev/null
-log "Ensuring ${USERNAME} has access to ${SOURCE_SOCKET} via ${TARGET_SOCKET}"
+log "Ensuring ${USER_NAME} has access to ${SOURCE_SOCKET} via ${TARGET_SOCKET}"
 
 # If enabled, try to add a docker group with the right GID. If the group is root, 
 # fall back on using socat to forward the docker socket to another unix socket so 
 # that we can set permissions on it without affecting the host.
-if [ "${ENABLE_NONROOT_DOCKER}" = "true" ] && [ "${SOURCE_SOCKET}" != "${TARGET_SOCKET}" ] && [ "${USERNAME}" != "root" ] && [ "${USERNAME}" != "0" ]; then
+if [ "${ENABLE_NONROOT_DOCKER}" = "true" ] && [ "${SOURCE_SOCKET}" != "${TARGET_SOCKET}" ] && [ "${USER_NAME}" != "root" ] && [ "${USER_NAME}" != "0" ]; then
     SOCKET_GID=\$(stat -c '%g' ${SOURCE_SOCKET})
     if [ "\${SOCKET_GID}" != "0" ]; then
         log "Adding user to group with GID \${SOCKET_GID}."
@@ -155,16 +155,16 @@ if [ "${ENABLE_NONROOT_DOCKER}" = "true" ] && [ "${SOURCE_SOCKET}" != "${TARGET_
             sudoIf groupadd --gid \${SOCKET_GID} docker-host
         fi
         # Add user to group if not already in it
-        if [ "\$(id ${USERNAME} | grep -E "groups.*(=|,)\${SOCKET_GID}\(")" = "" ]; then
-            sudoIf usermod -aG \${SOCKET_GID} ${USERNAME}
+        if [ "\$(id ${USER_NAME} | grep -E "groups.*(=|,)\${SOCKET_GID}\(")" = "" ]; then
+            sudoIf usermod -aG \${SOCKET_GID} ${USER_NAME}
         fi
     else
         # Enable proxy if not already running
         if [ ! -f "\${SOCAT_PID}" ] || ! ps -p \$(cat \${SOCAT_PID}) > /dev/null; then
             log "Enabling socket proxy."
-            log "Proxying ${SOURCE_SOCKET} to ${TARGET_SOCKET} for vscode"
+            log "Proxying ${SOURCE_SOCKET} to ${TARGET_SOCKET} for non-root"
             sudoIf rm -rf ${TARGET_SOCKET}
-            (sudoIf socat UNIX-LISTEN:${TARGET_SOCKET},fork,mode=660,user=${USERNAME} UNIX-CONNECT:${SOURCE_SOCKET} 2>&1 | sudoIf tee -a \${SOCAT_LOG} > /dev/null & echo "\$!" | sudoIf tee \${SOCAT_PID} > /dev/null)
+            (sudoIf socat UNIX-LISTEN:${TARGET_SOCKET},fork,mode=660,user=${USER_NAME} UNIX-CONNECT:${SOURCE_SOCKET} 2>&1 | sudoIf tee -a \${SOCAT_LOG} > /dev/null & echo "\$!" | sudoIf tee \${SOCAT_PID} > /dev/null)
         else
             log "Socket proxy already running."
         fi
@@ -178,5 +178,5 @@ set +e
 exec "\$@"
 EOF
 chmod +x /usr/local/share/docker-init.sh
-chown ${USERNAME}:root /usr/local/share/docker-init.sh
+chown ${USER_NAME}:root /usr/local/share/docker-init.sh
 echo "Done!"

@@ -1,5 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-name: lyscm.common.tiers.rust - CI
+name: environments-rust - CI
 
 on:
   pull_request:
@@ -23,7 +23,7 @@ jobs:
     name: "Build & Push: Image"
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: lyscm/lyscm.common.tiers/rust
+      IMAGE_NAME: lyscm/environments/rust
 
     steps:
       - name: 1 - Checkout
