@@ -1,4 +1,4 @@
-# RUST TIER BUILDER - REPOSITORY <h1> 
+# RUST ENVIRONMENT BUILDER - REPOSITORY <h1> 
 
 [![environments-rust - CI](https://github.com/lyscm/environments-rust/actions/workflows/deploy-packages.yml/badge.svg?branch=master)](https://github.com/lyscm/environments-rust/actions/workflows/deploy-packages.yml)
 

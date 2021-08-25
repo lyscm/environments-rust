@@ -15,8 +15,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  TARGET_PLATFORMS: linux/amd64
-  #,linux/arm/v6,linux/arm/v7
+  TARGET_PLATFORMS: linux/amd64,linux/arm/v6,linux/arm/v7
 
 jobs:
   build-and-push-image:
