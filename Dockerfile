@@ -34,8 +34,7 @@ COPY --from=settings /lyscm/$TARGETPLATFORM/.vscode-configurations/ ${VSCODE_SER
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access 
 # to the Docker socket. The script will also execute CMD as needed.
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
-CMD docker buildx create --name "docker-buildx-driver" --use \
-    && git config --global user.email "no-reply@lyscm.github.com" \
+CMD git config --global user.email "no-reply@lyscm.github.com" \
     && git config --global user.name "lyscm" \
     && sleep "infinity"
 
