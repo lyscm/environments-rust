@@ -8,7 +8,7 @@ Set parameters:
 
 ```bash
 OWNER=lyscm
-CONTAINER_NAME=lyscm.rust-tier
+CONTAINER_NAME=rust
 TAG=ghcr.io/lyscm/environments/rust
 ```
 Remove any existing container:
