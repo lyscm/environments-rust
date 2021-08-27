@@ -1,4 +1,4 @@
-# rust ENVIRONMENT BUILDER - REPOSITORY <h1> 
+# RUST ENVIRONMENT BUILDER - REPOSITORY <h1> 
  
 [![build](https://img.shields.io/github/workflow/status/lyscm/environments-rust/environment-rust%20-%20ci?logo=github)](https://github.com/lyscm/environments-rust/blob/master/.github/workflows/build-action.yml)
 [![repo size](https://img.shields.io/github/repo-size/lyscm/environments-rust?logo=github)](https://github.com/lyscm/environments-rust)
