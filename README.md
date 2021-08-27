@@ -1,16 +1,27 @@
-# RUST ENVIRONMENT BUILDER - REPOSITORY <h1> 
-
-[![environments-rust - CI](https://github.com/lyscm/environments-rust/actions/workflows/deploy-packages.yml/badge.svg?branch=master)](https://github.com/lyscm/environments-rust/actions/workflows/deploy-packages.yml)
+# rust ENVIRONMENT BUILDER - REPOSITORY <h1> 
+ 
+[![build](https://img.shields.io/github/workflow/status/lyscm/environments-rust/environment-rust%20-%20ci?logo=github)](https://github.com/lyscm/environments-rust/blob/master/.github/workflows/build-action.yml)
+[![repo size](https://img.shields.io/github/repo-size/lyscm/environments-rust?logo=github)](https://github.com/lyscm/environments-rust)
+[![package](https://img.shields.io/static/v1?label=package&message=rust&color=yellowgreen&logo=github)](https://github.com/lyscm/environments-rust/pkgs/container/environments%2Frust)
 
 ## Initiate package(s): <h2> 
 
 Set parameters:
 
+***Bash:***
 ```bash
 OWNER=lyscm
 CONTAINER_NAME=rust
 TAG=ghcr.io/lyscm/environments/rust
 ```
+
+***Powershell:***
+```powershell
+$OWNER="lyscm"
+$CONTAINER_NAME="rust"
+$TAG="ghcr.io/lyscm/environments/rust"
+```
+
 Remove any existing container:
 
 ```bash

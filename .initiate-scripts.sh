@@ -1,19 +1,19 @@
-
 OWNER="lyscm"
 REGISTRY="ghcr.io"
 REPOSITORY_NAME="environments/rust"
+TAG="extensions"
 
 echo $CR_PAT | docker login $REGISTRY -u $OWNER --password-stdin
 
-cd $HOME/.vscode-server/extensions/ && zip -9 -r extensions.zip ./* && cd -
+cd $HOME/.vscode-server/$TAG/ && zip -9 -r $TAG.zip ./* && cd -
 
-yes | cp -r $HOME/.vscode-server/extensions/extensions.zip .
-rm -rf $HOME/.vscode-server/extensions/extensions.zip
+yes | cp -r $HOME/.vscode-server/$TAG/$TAG.zip .
+rm -rf $HOME/.vscode-server/$TAG/$TAG.zip
 
 docker buildx build \
     --output "type=image,push=true" \
-    --file ./Dockerfile.extensions \
-    --tag $REGISTRY/$OWNER/$REPOSITORY_NAME/extensions \
+    --file ./Dockerfile.$TAG \
+    --tag $REGISTRY/$OWNER/$REPOSITORY_NAME/$TAG \
     .
 
-rm -rf extensions.zip
+rm -rf $TAG.zip
