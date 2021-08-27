@@ -21,8 +21,8 @@ env:
   TARGET_PLATFORMS: linux/amd64,linux/arm/v6,linux/arm/v7
 
 jobs:
-  build-and-push-parent-image:
-    name: "build & push: parent image"
+  build-and-register-parent-image:
+    name: "build & register: parent image"
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: environments/rust/base
@@ -58,7 +58,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-base-buildx-
 
-      - name: 4 - Setup Registry Metadata
+      - name: 6 - Setup Registry Metadata
         id: metadata
         run: |
 
@@ -117,9 +117,9 @@ jobs:
         run: |
           docker buildx imagetools inspect ${{ steps.metadata.outputs.image_id }}:${{ steps.metadata.outputs.version }}
 
-  build-and-push-image:
-    needs: build-and-push-parent-image
-    name: "build & push: image"
+  build-and-register-image:
+    needs: build-and-register-parent-image
+    name: "build & register: image"
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: environments/rust
@@ -155,7 +155,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: 4 - Setup Registry Metadata
+      - name: 6 - Setup Registry Metadata
         id: metadata
         run: |
 
