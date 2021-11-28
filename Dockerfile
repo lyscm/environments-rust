@@ -23,18 +23,19 @@ FROM ghcr.io/lyscm/environments/rust/base
 ARG TARGETPLATFORM
 ARG OWNER="lyscm"
 ARG REPOSITORY_NAME="environments-rust"
+ARG VSCODE_SERVER_PATH="/root/.vscode-server"
 
 LABEL org.opencontainers.image.source https://github.com/${OWNER}/${REPOSITORY_NAME}
 
 # [Required] Setup settings and extensions
-ARG VSCODE_SERVER_PATH=/root/.vscode-server
-RUN rm -rf "${VSCODE_SERVER_PATH}/extensions/" && rm -rf "${VSCODE_SERVER_PATH}/extensionsCache/"
+ENV VSCODE_SERVER_PATH=${VSCODE_SERVER_PATH}
 COPY --from=settings /lyscm/$TARGETPLATFORM/extensions/ ${VSCODE_SERVER_PATH}/extensions/
 COPY --from=settings /lyscm/$TARGETPLATFORM/.vscode-configurations/ ${VSCODE_SERVER_PATH}/data/Machine/
 
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access 
 # to the Docker socket. The script will also execute CMD as needed.
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
-CMD git config --global user.email "$(echo $GIT_EMAIL)" \
+CMD rm -rf "$(echo $VSCODE_SERVER_PATH)/extensions/" && rm -rf "$(echo $VSCODE_SERVER_PATH)/extensionsCache/" \
+    && git config --global user.email "$(echo $GIT_EMAIL)" \
     && git config --global user.name "$(echo $GIT_AUTHOR)" \
     && sleep "infinity"
