@@ -40,4 +40,4 @@ RUN curl --proto '=https' --tlsv1.2 -sSL https://sh.getsynth.com | sh -s -- --fo
     && export PATH=$PATH:/root/.local/bin
     
 # Install Node.js
-RUN apt-get -y install npm nodejs && npm install npm@latest -g
+# RUN apt-get -y install npm nodejs && npm install npm@latest -g
