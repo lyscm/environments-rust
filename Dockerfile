@@ -28,7 +28,7 @@ LABEL org.opencontainers.image.source https://github.com/${OWNER}/${REPOSITORY_N
 
 # [Required] Setup settings and extensions
 ARG VSCODE_SERVER_PATH=/root/.vscode-server
-RUN rm -rf "${VSCODE_SERVER_PATH}/extensions/"
+RUN rm -rf "${VSCODE_SERVER_PATH}/extensions/" && rm -rf "${VSCODE_SERVER_PATH}/extensionsCache/"
 COPY --from=settings /lyscm/$TARGETPLATFORM/extensions/ ${VSCODE_SERVER_PATH}/extensions/
 COPY --from=settings /lyscm/$TARGETPLATFORM/.vscode-configurations/ ${VSCODE_SERVER_PATH}/data/Machine/
 
