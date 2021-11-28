@@ -43,8 +43,8 @@ docker run \
     --cap-add=SYS_PTRACE \
     --security-opt seccomp:unconfined \
     --privileged \
-    --GIT_AUTHOR= \
-    --GIT_EMAIL= \
+    --env GIT_AUTHOR= \
+    --env GIT_EMAIL= \
     $TAG
 ```
  
@@ -59,7 +59,7 @@ docker run `
     --cap-add=SYS_PTRACE `
     --security-opt seccomp:unconfined `
     --privileged `
-    --GIT_AUTHOR= `
-    --GIT_EMAIL= `
+    --env GIT_AUTHOR= `
+    --env GIT_EMAIL= `
     $TAG
 ```
