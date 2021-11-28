@@ -28,12 +28,13 @@ LABEL org.opencontainers.image.source https://github.com/${OWNER}/${REPOSITORY_N
 
 # [Required] Setup settings and extensions
 ARG VSCODE_SERVER_PATH=/root/.vscode-server
+RUN rm -rf "${VSCODE_SERVER_PATH}/extensions/"
 COPY --from=settings /lyscm/$TARGETPLATFORM/extensions/ ${VSCODE_SERVER_PATH}/extensions/
 COPY --from=settings /lyscm/$TARGETPLATFORM/.vscode-configurations/ ${VSCODE_SERVER_PATH}/data/Machine/
 
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access 
 # to the Docker socket. The script will also execute CMD as needed.
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
-CMD git config --global user.email "no-reply@lyscm.github.com" \
-    && git config --global user.name "lyscm" \
+CMD git config --global user.email "$(echo $GIT_EMAIL)" \
+    && git config --global user.name "$(echo $GIT_AUTHOR)" \
     && sleep "infinity"
